@@ -3,57 +3,57 @@ package net.petitviolet.todoex.service
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.server.Directives._
 import net.petitviolet.todoex.json.JsonHelper
-import net.petitviolet.todoex.repo.{ Bank, BankRepository }
+import net.petitviolet.todoex.repo.{ ToDo, ToDoRepository }
 import scala.concurrent.ExecutionContext.Implicits.global
 
-trait Routes extends JsonHelper { this: BankRepository =>
+trait Routes extends JsonHelper { this: ToDoRepository =>
 
   val routes = {
 
-    path("bank" / IntNumber) { id =>
+    path("todo" / IntNumber) { id =>
       get {
         complete {
           getById(id).map { result =>
             if (result.isDefined)
               HttpResponse(entity = write(result.get))
             else
-              HttpResponse(entity = "This bank does not exist")
+              HttpResponse(entity = "This todo does not exist")
           }
 
         }
       }
     } ~
-      path("bank" / "all") {
+      path("todo" / "all") {
         get {
           complete {
             getAll().map { result => HttpResponse(entity = write(result)) }
           }
         }
       } ~
-      path("bank" / "save") {
+      path("todo" / "save") {
         post {
-          entity(as[String]) { bankJson =>
+          entity(as[String]) { todoJson =>
             complete {
-              val bank = parse(bankJson).extract[Bank]
-              create(bank).map { result => HttpResponse(entity = "Bank has  been saved successfully") }
+              val todo = parse(todoJson).extract[ToDo]
+              create(todo).map { result => HttpResponse(entity = "ToDo has  been saved successfully") }
             }
           }
         }
       } ~
-      path("bank" / "update") {
+      path("todo" / "update") {
         post {
-          entity(as[String]) { bankJson =>
+          entity(as[String]) { todoJson =>
             complete {
-              val bank = parse(bankJson).extract[Bank]
-              update(bank).map { result => HttpResponse(entity = "Bank has  been updated successfully") }
+              val todo = parse(todoJson).extract[ToDo]
+              update(todo).map { result => HttpResponse(entity = "ToDo has  been updated successfully") }
             }
           }
         }
       } ~
-      path("bank" / "delete" / IntNumber) { id =>
+      path("todo" / "delete" / IntNumber) { id =>
         post {
           complete {
-            delete(id).map { result => HttpResponse(entity = "Bank has been deleted successfully") }
+            delete(id).map { result => HttpResponse(entity = "ToDo has been deleted successfully") }
 
           }
         }

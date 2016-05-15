@@ -1,64 +1,58 @@
 package net.petitviolet.todoex.service
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
+import akka.http.scaladsl.model.{ ContentTypes, HttpEntity }
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.knoldus.connection.H2DBImpl
-import com.knoldus.repo.{Bank, BankRepository}
-import org.scalatest.{Matchers, WordSpec}
+import net.petitviolet.todoex.repo.{ ToDoRepository, TestH2DBImpl, ToDo }
+import org.scalatest.{ Matchers, WordSpec }
 
 import scala.concurrent.Future
 
+class RouteTest extends WordSpec with Matchers with ScalatestRouteTest with Routes with ToDoRepositoryTestImpl {
 
-class RouteTest  extends WordSpec with Matchers with ScalatestRouteTest with Routes with BankRepositoryTestImpl{
+  "The ToDo service" should {
 
-  "The Bank service" should {
-
-    "get bank detail by bank id" in {
-      Get("/bank/1") ~> routes ~> check {
+    "get todo detail by todo id" in {
+      Get("/todo/1") ~> routes ~> check {
         responseAs[String] === """{}"""
       }
     }
 
-    "get all bank detail " in {
-      Get("/bank/all") ~> routes ~> check {
-        responseAs[String] shouldEqual  """[{"name":"TestB bank","id":1}]"""
+    "get all todo detail " in {
+      Get("/todo/all") ~> routes ~> check {
+        responseAs[String] shouldEqual """[{"name":"TestB todo","id":1}]"""
       }
     }
 
-    "save bank detail" in {
-      Post("/bank/save", HttpEntity(ContentTypes.`application/json`, write(Bank("My test Bank")))) ~> routes ~> check {
-        responseAs[String] shouldEqual "Bank has  been saved successfully"
+    "save todo detail" in {
+      Post("/todo/save", HttpEntity(ContentTypes.`application/json`, write(ToDo("My test ToDo")))) ~> routes ~> check {
+        responseAs[String] shouldEqual "ToDo has  been saved successfully"
       }
     }
 
-
-    "update bank detail" in {
-      Post("/bank/update", HttpEntity(ContentTypes.`application/json`, write(Bank("My test Bank")))) ~> routes ~> check {
-        responseAs[String] shouldEqual "Bank has  been updated successfully"
+    "update todo detail" in {
+      Post("/todo/update", HttpEntity(ContentTypes.`application/json`, write(ToDo("My test ToDo")))) ~> routes ~> check {
+        responseAs[String] shouldEqual "ToDo has  been updated successfully"
       }
     }
 
-    "delete bank detail by id" in {
-      Post("/bank/delete/2") ~> routes ~> check {
-        responseAs[String] shouldEqual "Bank has been deleted successfully"
+    "delete todo detail by id" in {
+      Post("/todo/delete/2") ~> routes ~> check {
+        responseAs[String] shouldEqual "ToDo has been deleted successfully"
       }
     }
 
   }
 
-
-
 }
 // For testing
-trait BankRepositoryTestImpl extends BankRepository with H2DBImpl{
-  override  def create(bank: Bank): Future[Int] = Future.successful(1)
+trait ToDoRepositoryTestImpl extends ToDoRepository with TestH2DBImpl {
+  override def create(todo: ToDo): Future[Int] = Future.successful(1)
 
-  override  def update(bank: Bank): Future[Int] = Future.successful(1)
+  override def update(todo: ToDo): Future[Int] = Future.successful(1)
 
-  override  def getById(id: Int): Future[Option[Bank]] = Future.successful(Some(Bank("TestB bank" ,Some(1))))
+  override def getById(id: Int): Future[Option[ToDo]] = Future.successful(Some(ToDo("TestB todo", Some(1))))
 
-  override def getAll(): Future[List[Bank]] = Future.successful(List(Bank("TestB bank" ,Some(1))))
+  override def getAll(): Future[List[ToDo]] = Future.successful(List(ToDo("TestB todo", Some(1))))
 
   override def delete(id: Int): Future[Int] = Future.successful(1)
-
 }

@@ -3,9 +3,9 @@ package net.petitviolet.todoex.service
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import net.petitviolet.todoex.repo.{ Bank, BankRepositoryImpl }
+import net.petitviolet.todoex.repo.{ ToDo, ToDoRepositoryImpl }
 
-object HttpService extends App with Routes with BankRepositoryImpl {
+object HttpService extends App with Routes with ToDoRepositoryImpl {
 
   implicit val system: ActorSystem = ActorSystem()
 
@@ -14,9 +14,9 @@ object HttpService extends App with Routes with BankRepositoryImpl {
   implicit val dispatcher = system.dispatcher
   ddl.onComplete {
     _ =>
-      create(Bank("SBI"))
-      create(Bank("PNB"))
-      create(Bank("RBS"))
+      create(ToDo("SBI"))
+      create(ToDo("PNB"))
+      create(ToDo("RBS"))
       Http().bindAndHandle(routes, "localhost", 9000)
   }
 

@@ -1,6 +1,6 @@
 
-INSERT INTO bank VALUES(1, 'SBI bank');
+INSERT INTO todo VALUES(1, 'SBI todo');
 
-INSERT INTO bank VALUES(2, 'PNB bank');
+INSERT INTO todo VALUES(2, 'PNB todo');
 
-INSERT INTO bank VALUES(3, 'RBS bank');
+INSERT INTO todo VALUES(3, 'RBS todo');

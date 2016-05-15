@@ -1,3 +1,3 @@
 
-CREATE TABLE bank(id int PRIMARY KEY auto_increment,name varchar(200));
+CREATE TABLE todo(id int PRIMARY KEY auto_increment,name varchar(200));
 
