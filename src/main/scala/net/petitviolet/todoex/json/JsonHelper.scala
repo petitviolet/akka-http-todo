@@ -6,6 +6,8 @@ import net.liftweb.json.JNothing
 import net.liftweb.json.Serialization
 import net.liftweb.json.{ parse => liftParser }
 
+import scala.language.implicitConversions
+
 trait JsonHelper {
 
   implicit protected val formats = DefaultFormats
