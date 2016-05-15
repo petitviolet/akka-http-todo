@@ -1,6 +1,6 @@
 package net.petitviolet.todoex.repo
 
-import net.petitviolet.todoex.connection.{ DBComponent, H2DBImpl }
+import net.petitviolet.todoex.connection.{ MySQLDBImpl, DBComponent }
 
 import scala.concurrent.Future
 
@@ -74,10 +74,7 @@ trait BankTable {
 
 }
 
-//for demo(connected to H2 in memory database )
-trait BankRepositoryImpl extends BankRepository with H2DBImpl
-
 //use this for production
-//trait BankRepositoryImpl extends BankRepository with MySQLDBImpl
+trait BankRepositoryImpl extends MySQLDBImpl with BankRepository
 
 case class Bank(name: String, id: Option[Int] = None)
