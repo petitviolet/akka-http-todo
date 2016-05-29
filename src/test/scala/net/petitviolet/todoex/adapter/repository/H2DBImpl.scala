@@ -1,6 +1,6 @@
-package net.petitviolet.todoex.repo
+package net.petitviolet.todoex.adapter.repository
 
-import net.petitviolet.todoex.connection.DBComponent
+import net.petitviolet.todoex.adapter.infra.DBComponent
 import org.slf4j.LoggerFactory
 
 trait TestH2DBImpl extends DBComponent {

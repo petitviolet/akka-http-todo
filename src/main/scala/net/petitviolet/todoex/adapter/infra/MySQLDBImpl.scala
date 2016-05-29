@@ -1,4 +1,4 @@
-package net.petitviolet.todoex.connection
+package net.petitviolet.todoex.adapter.infra
 
 import slick.driver.MySQLDriver
 
@@ -12,7 +12,7 @@ trait MySQLDBImpl extends DBComponent {
 
 }
 
-private[connection] object MySqlDB {
+private[infra] object MySqlDB {
 
   import slick.driver.MySQLDriver.api._
 

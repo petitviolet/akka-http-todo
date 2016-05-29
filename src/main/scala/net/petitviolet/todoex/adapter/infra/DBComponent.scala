@@ -1,4 +1,4 @@
-package net.petitviolet.todoex.connection
+package net.petitviolet.todoex.adapter.infra
 
 import slick.driver.JdbcProfile
 

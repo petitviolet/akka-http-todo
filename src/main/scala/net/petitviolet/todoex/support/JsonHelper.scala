@@ -1,4 +1,4 @@
-package net.petitviolet.todoex.json
+package net.petitviolet.todoex.support
 
 import net.liftweb.json.DefaultFormats
 import net.liftweb.json.JValue

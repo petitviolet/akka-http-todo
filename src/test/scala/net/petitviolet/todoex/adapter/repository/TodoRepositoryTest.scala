@@ -1,5 +1,6 @@
-package net.petitviolet.todoex.repo
+package net.petitviolet.todoex.adapter.repository
 
+import net.petitviolet.todoex.domain.todo.Todo
 import org.scalatest.FunSuite
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{ Millis, Seconds, Span }
@@ -7,7 +8,7 @@ import org.scalatest.time.{ Millis, Seconds, Span }
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class ToDoRepositoryTest extends FunSuite with ToDoRepository with TestH2DBImpl with ScalaFutures {
+class TodoRepositoryTest extends FunSuite with ToDoRepository with TestH2DBImpl with ScalaFutures {
 
   implicit val defaultPatience = PatienceConfig(timeout = Span(5, Seconds), interval = Span(500, Millis))
 
@@ -15,14 +16,14 @@ class ToDoRepositoryTest extends FunSuite with ToDoRepository with TestH2DBImpl 
   //  ddl
 
   test("Add new todo ") {
-    val response = create(ToDo("ICICI todo"))
+    val response = create(Todo("ICICI todo"))
     whenReady(response) { todoId =>
       assert(todoId === 4)
     }
   }
 
   test("Update  SBI todo  ") {
-    val response = update(ToDo("SBI ToDo", Some(1)))
+    val response = update(Todo("SBI ToDo", Some(1)))
     whenReady(response) { res =>
       assert(res === 1)
     }
@@ -38,7 +39,7 @@ class ToDoRepositoryTest extends FunSuite with ToDoRepository with TestH2DBImpl 
   test("Get todo list") {
     val todoList = getAll()
     whenReady(todoList) { result =>
-      assert(result === List(ToDo("SBI todo", Some(1)), ToDo("PNB todo", Some(2)), ToDo("RBS todo", Some(3))))
+      assert(result === List(Todo("SBI todo", Some(1)), Todo("PNB todo", Some(2)), Todo("RBS todo", Some(3))))
     }
   }
 

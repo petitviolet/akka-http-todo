@@ -1,8 +1,9 @@
-package net.petitviolet.todoex.service
+package net.petitviolet.todoex.application
 
 import akka.http.scaladsl.model.{ ContentTypes, HttpEntity }
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import net.petitviolet.todoex.repo.{ ToDoRepository, TestH2DBImpl, ToDo }
+import net.petitviolet.todoex.adapter.repository.{ ToDoRepository, TestH2DBImpl }
+import net.petitviolet.todoex.domain.todo.Todo
 import org.scalatest.{ Matchers, WordSpec }
 
 import scala.concurrent.Future
@@ -24,13 +25,13 @@ class RouteTest extends WordSpec with Matchers with ScalatestRouteTest with Rout
     }
 
     "save todo detail" in {
-      Post("/todo/save", HttpEntity(ContentTypes.`application/json`, write(ToDo("My test ToDo")))) ~> routes ~> check {
+      Post("/todo/save", HttpEntity(ContentTypes.`application/json`, write(Todo("My test ToDo")))) ~> routes ~> check {
         responseAs[String] shouldEqual "ToDo has  been saved successfully"
       }
     }
 
     "update todo detail" in {
-      Post("/todo/update", HttpEntity(ContentTypes.`application/json`, write(ToDo("My test ToDo")))) ~> routes ~> check {
+      Post("/todo/update", HttpEntity(ContentTypes.`application/json`, write(Todo("My test ToDo")))) ~> routes ~> check {
         responseAs[String] shouldEqual "ToDo has  been updated successfully"
       }
     }
@@ -46,13 +47,13 @@ class RouteTest extends WordSpec with Matchers with ScalatestRouteTest with Rout
 }
 // For testing
 trait ToDoRepositoryTestImpl extends ToDoRepository with TestH2DBImpl {
-  override def create(todo: ToDo): Future[Int] = Future.successful(1)
+  override def create(todo: Todo): Future[Int] = Future.successful(1)
 
-  override def update(todo: ToDo): Future[Int] = Future.successful(1)
+  override def update(todo: Todo): Future[Int] = Future.successful(1)
 
-  override def getById(id: Int): Future[Option[ToDo]] = Future.successful(Some(ToDo("TestB todo", Some(1))))
+  override def getById(id: Int): Future[Option[Todo]] = Future.successful(Some(Todo("TestB todo", Some(1))))
 
-  override def getAll(): Future[List[ToDo]] = Future.successful(List(ToDo("TestB todo", Some(1))))
+  override def getAll(): Future[List[Todo]] = Future.successful(List(Todo("TestB todo", Some(1))))
 
   override def delete(id: Int): Future[Int] = Future.successful(1)
 }
