@@ -1,7 +1,7 @@
 package net.petitviolet.todoex.contract
 
 // Output Port
-trait Callback[Result] {
+trait OutputCallbackPort[Result] {
 
   def onSuccess(result: Result): Unit
 

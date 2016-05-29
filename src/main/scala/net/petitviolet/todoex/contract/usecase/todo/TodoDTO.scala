@@ -9,6 +9,7 @@ object TodoDTOJsonProtocol extends DefaultJsonProtocol {
   implicit val todoDTOProtocol: RootJsonFormat[TodoDTO] = jsonFormat2(TodoDTO.apply)
 }
 
+// represent Todo object with `None` id
 case class TodoNameDTO(name: String)
 
 object TodoNameDTOJsonProtocol extends DefaultJsonProtocol {

@@ -2,7 +2,7 @@ package net.petitviolet.todoex.contract
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait Presenter[C <: Callback[_]] {
+trait Presenter[C <: OutputCallbackPort[_]] {
 
   type UseCaseExecutor = C => Unit
 

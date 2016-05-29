@@ -3,15 +3,20 @@ package net.petitviolet.todoex.contract
 import scala.concurrent.ExecutionContext
 import scala.util.{ Failure, Success }
 
-// Input Port
+/**
+  * InputPort is a boundary of layers Controller and UseCase
+  * And InputPort should be implemented by UseCase object
+  * @tparam Arg: Argument for UseCase#call
+  * @tparam Result Return from UseCase#call wrapped by `Future`
+  */
 trait InputPort[Arg, Result] {
   self: UseCase =>
 
-  override final type In = Arg
+  override type In = Arg
 
-  override final type Out = Result
+  override type Out = Result
 
-  def execute[T <: Callback[Result]](arg: Arg)(callback: T)(implicit ec: ExecutionContext): Unit = {
+  def execute[T <: OutputCallbackPort[Result]](arg: Arg)(callback: T)(implicit ec: ExecutionContext): Unit = {
     call(arg).onComplete {
       case Success(result) =>
         callback.onSuccess(result)

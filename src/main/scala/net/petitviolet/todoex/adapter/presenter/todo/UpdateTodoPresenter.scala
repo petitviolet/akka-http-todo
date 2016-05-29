@@ -1,16 +1,16 @@
 package net.petitviolet.todoex.adapter.presenter.todo
 
-import net.petitviolet.todoex.contract.callback.todo.TodoCallbackImpl
+import net.petitviolet.todoex.contract.callback.todo.TodoOutputCallbackPortImpl
 import net.petitviolet.todoex.contract.usecase.todo.TodoDTO
-import net.petitviolet.todoex.contract.{ Callback, Presenter }
+import net.petitviolet.todoex.contract.{OutputCallbackPort, Presenter}
 
-import scala.concurrent.{ ExecutionContext, Future, Promise }
+import scala.concurrent.{ExecutionContext, Future}
 
-trait UpdateTodoPresenter extends Presenter[Callback[TodoDTO]] {
+trait UpdateTodoPresenter extends Presenter[OutputCallbackPort[TodoDTO]] {
   type Rendered = TodoDTO
 
   override def response(call: UseCaseExecutor)(implicit ec: ExecutionContext): Future[Rendered] = {
-    val callback = new TodoCallbackImpl
+    val callback = new TodoOutputCallbackPortImpl
     call(callback)
     callback.promise.future
   }
