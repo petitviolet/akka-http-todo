@@ -10,7 +10,7 @@ trait FindTodoPresenter extends Presenter[OutputCallbackPort[Option[TodoDTO]]] {
   type Rendered = Option[TodoDTO]
 
   override def response(call: UseCaseExecutor)(implicit ec: ExecutionContext): Future[Rendered] = {
-    val callback = new OutputCallbackPortImpl[Option[TodoDTO]]
+    val callback = new OutputCallbackPortImpl[Rendered]
     call(callback)
     callback.promise.future
   }

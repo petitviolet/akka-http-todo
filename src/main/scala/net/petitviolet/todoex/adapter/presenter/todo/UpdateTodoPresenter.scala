@@ -10,7 +10,7 @@ trait UpdateTodoPresenter extends Presenter[OutputCallbackPort[TodoDTO]] {
   type Rendered = TodoDTO
 
   override def response(call: UseCaseExecutor)(implicit ec: ExecutionContext): Future[Rendered] = {
-    val callback = new OutputCallbackPortImpl[TodoDTO]
+    val callback = new OutputCallbackPortImpl[Rendered]
     call(callback)
     callback.promise.future
   }
