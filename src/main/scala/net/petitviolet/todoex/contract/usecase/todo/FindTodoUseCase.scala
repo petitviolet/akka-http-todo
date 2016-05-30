@@ -2,45 +2,44 @@ package net.petitviolet.todoex.contract.usecase.todo
 
 import net.petitviolet.todoex.adapter.repository.{ MixInToDoRepository, UsesToDoRepository }
 import net.petitviolet.todoex.contract.{ InputPort, UseCase }
-import net.petitviolet.todoex.domain.todo.Todo
 
 import scala.concurrent.{ ExecutionContext, Future }
 
 /**
-  * UseCase for updating Todo
-  * receive input as a TodoDTO
-  * then
-  * store new Todo object
-  * and
-  * response output as a TodoDTO
-  */
-trait UpdateTodoUseCase extends UseCase
-    with InputPort[TodoDTO, TodoDTO] with UsesToDoRepository {
+ * UseCase for find Todo
+ * receive input as a FindTodoDTO
+ * then
+ * find a Todo
+ * and
+ * response output as a Some(TodoDTO) if exists else None
+ */
+trait FindTodoUseCase extends UseCase
+    with InputPort[FindTodoDTO, Option[TodoDTO]] with UsesToDoRepository {
 
   override protected def call(arg: In)(implicit ec: ExecutionContext): Future[Out] = {
-    val todo = dtoToEntity(arg)
-    val idFuture = todoRepository.update(todo)
-
-    idFuture map { id =>
-      TodoDTO(id, arg.name)
+    (arg match {
+      case FindByIdTodoDTO(id) =>
+        todoRepository.getById(id)
+      case FindByNameTodoDTO(name) =>
+        todoRepository.getByName(name)
+    }).map { todoOpt =>
+      for {
+        todo <- todoOpt
+        id <- todo.id
+      } yield {
+        TodoDTO(id, todo.name)
+      }
     }
   }
 
-  /**
-    * convert TodoDTO => Todo
-    * @param arg
-    * @return
-    */
-  private def dtoToEntity(arg: In) =
-    Todo(id = Some(arg.id), name = arg.name)
 }
 
-trait UsesUpdateTodoUseCase {
-  val updateTodoUseCase: UpdateTodoUseCase
+trait UsesFindTodoUseCase {
+  val findTodoUseCase: FindTodoUseCase
 }
 
-trait MixInUpdateTodoUseCase {
-  val updateTodoUseCase: UpdateTodoUseCase = new UpdateTodoUseCaseImpl
+trait MixInFindTodoUseCase {
+  val findTodoUseCase: FindTodoUseCase = new FindTodoUseCaseImpl
 }
 
-class UpdateTodoUseCaseImpl extends UpdateTodoUseCase with MixInToDoRepository
+class FindTodoUseCaseImpl extends FindTodoUseCase with MixInToDoRepository

@@ -23,11 +23,11 @@ trait UpdateTodoUseCase extends UseCase
 }
 
 trait UsesUpdateTodoUseCase {
-  val updateTodoUseCase: UpdateTodoUseCase
+  val updateTodoUseCase: FindTodoUseCase
 }
 
 trait MixInUpdateTodoUseCase {
-  val updateTodoUseCase: UpdateTodoUseCase = new UpdateTodoUseCaseImpl
+  val updateTodoUseCase: FindTodoUseCase = new FindTodoUseCaseImpl
 }
 
-class UpdateTodoUseCaseImpl extends UpdateTodoUseCase with MixInToDoRepository
+class UpdateTodoUseCaseImpl extends FindTodoUseCase with MixInToDoRepository

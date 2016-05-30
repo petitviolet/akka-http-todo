@@ -6,23 +6,23 @@ import net.petitviolet.todoex.contract.{ OutputCallbackPort, Presenter }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait UpdateTodoPresenter extends Presenter[OutputCallbackPort[TodoDTO]] {
-  type Rendered = TodoDTO
+trait FindTodoPresenter extends Presenter[OutputCallbackPort[Option[TodoDTO]]] {
+  type Rendered = Option[TodoDTO]
 
   override def response(call: UseCaseExecutor)(implicit ec: ExecutionContext): Future[Rendered] = {
-    val callback = new OutputCallbackPortImpl[TodoDTO]
+    val callback = new OutputCallbackPortImpl[Option[TodoDTO]]
     call(callback)
     callback.promise.future
   }
 
 }
 
-trait UsesUpdateTodoPresenter {
-  val updateTodoPresenter: UpdateTodoPresenter
+trait UsesFindTodoPresenter {
+  val findTodoPresenter: FindTodoPresenter
 }
 
-trait MixInUpdateTodoPresenter {
-  val updateTodoPresenter: UpdateTodoPresenter = new UpdateTodoPresenterImpl
+trait MixInFindTodoPresenter {
+  val findTodoPresenter: FindTodoPresenter = new FindTodoPresenterImpl
 }
 
-class UpdateTodoPresenterImpl extends UpdateTodoPresenter
+class FindTodoPresenterImpl extends FindTodoPresenter
