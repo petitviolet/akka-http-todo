@@ -33,13 +33,14 @@ trait TodoController extends JsonController
         }
       }
     } ~
-      ((path("search") & parameter('name).as[FindTodoDTO](FindByNameTodoDTO)) |
-        path(IntNumber).as[FindTodoDTO](FindByIdTodoDTO)) { byId: FindTodoDTO =>
+      (path("all") & provide(FindAllTodoDTO) |
+        (path("search") & parameter('name).as[FindTodoDTO](FindByNameTodoDTO)) |
+        path(IntNumber).as[FindTodoDTO](FindByIdTodoDTO)) { findDto: FindTodoDTO =>
           get {
             import TodoDTOJsonProtocol._
             onSuccess(findTodoPresenter.response(
-              findTodoUseCase.execute(byId)
-            )) { dtoOpt => dtoOpt.map(dto => complete(dto)) getOrElse (throw NoContentException) }
+              findTodoUseCase.execute(findDto)
+            )) { dtos => complete(dtos) }
           }
         } ~
         path("save") {

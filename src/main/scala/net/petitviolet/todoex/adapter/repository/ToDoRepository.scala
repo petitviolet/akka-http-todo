@@ -35,8 +35,8 @@ trait ToDoRepository extends ToDoTable {
     todoTableQuery.filter(_.id === id).result.headOption
   }
 
-  def getByName(name: String): Future[Option[Todo]] = db.run {
-    todoTableQuery.filter(_.name === name).result.headOption
+  def getByName(name: String): Future[Seq[Todo]] = db.run {
+    todoTableQuery.filter(_.name like name).result
   }
 
   /**

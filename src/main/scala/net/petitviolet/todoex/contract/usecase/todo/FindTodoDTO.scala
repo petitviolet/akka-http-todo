@@ -3,8 +3,9 @@ package net.petitviolet.todoex.contract.usecase.todo
 import spray.json._
 
 sealed trait FindTodoDTO
-case class FindByIdTodoDTO(id: Int) extends FindTodoDTO
-case class FindByNameTodoDTO(name: String) extends FindTodoDTO
+final case object FindAllTodoDTO extends FindTodoDTO
+final case class FindByIdTodoDTO(id: Int) extends FindTodoDTO
+final case class FindByNameTodoDTO(name: String) extends FindTodoDTO
 
 object FindTodoDTOJsonProtocol extends DefaultJsonProtocol {
   implicit val findTodoDTOFormat: RootJsonReader[FindTodoDTO] =

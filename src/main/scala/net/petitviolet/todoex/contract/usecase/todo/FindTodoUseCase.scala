@@ -14,12 +14,14 @@ import scala.concurrent.{ ExecutionContext, Future }
  * response output as a Some(TodoDTO) if exists else None
  */
 trait FindTodoUseCase extends UseCase
-    with InputPort[FindTodoDTO, Option[TodoDTO]] with UsesToDoRepository {
+    with InputPort[FindTodoDTO, Seq[TodoDTO]] with UsesToDoRepository {
 
   override protected def call(arg: In)(implicit ec: ExecutionContext): Future[Out] = {
     (arg match {
+      case FindAllTodoDTO =>
+        todoRepository.getAll
       case FindByIdTodoDTO(id) =>
-        todoRepository.getById(id)
+        todoRepository.getById(id) map { _.toSeq }
       case FindByNameTodoDTO(name) =>
         todoRepository.getByName(name)
     }).map { todoOpt =>
