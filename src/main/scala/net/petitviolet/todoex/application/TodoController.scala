@@ -1,16 +1,11 @@
 package net.petitviolet.todoex.application
 
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server._
 import akka.http.scaladsl.unmarshalling.Unmarshaller._
 import net.petitviolet.todoex.adapter.presenter.todo._
 import net.petitviolet.todoex.adapter.repository.{ MixInToDoRepository, UsesToDoRepository }
+import net.petitviolet.todoex.contract.usecase.todo.TodoDTOJsonProtocol._
 import net.petitviolet.todoex.contract.usecase.todo._
-import net.petitviolet.todoex.domain.todo.Todo
-import TodoDTOJsonProtocol._
-import TodoNameDTOJsonProtocol._
-import TodoIdDTOJsonProtocol._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -35,7 +30,6 @@ trait TodoController extends JsonController
       path("search") & parameter('name).as[FindTodoDTO](FindByNameTodoDTO) |
       path(IntNumber).as[FindTodoDTO](FindByIdTodoDTO)) { findDto: FindTodoDTO =>
         get {
-          import TodoDTOJsonProtocol._
           onSuccess(findTodoPresenter.response(
             findTodoUseCase.execute(findDto)
           )) { dtos => complete(dtos) }
