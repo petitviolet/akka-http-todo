@@ -14,61 +14,61 @@ $ ./activator run
 
 ### Test http rest point using curl:
 
-1) Get Bank detail by bank id
+1) Get Todo detail by todo id
 
  request:
  ```
-$ curl localhost:9000/bank/1
+$ curl localhost:9000/todo/1
  
  ```
 response:
 ```
- {"name":"SBI bank","id":1}
+ {"name":"SBI todo","id":1}
  ```
 
-2)Get all Bank detail
+2)Get all Todo detail
 
 
  request:
 ```
-$ curl localhost:9000/bank/all
+$ curl localhost:9000/todo/all
 ```
 response:
 ```
-[{"name":"SBI bank","id":1},{"name":"PNB bank","id":2},{"name":"RBS bank","id":3}]
+[{"name":"SBI todo","id":1},{"name":"PNB todo","id":2},{"name":"RBS todo","id":3}]
 ```
 
-3)Save new bank detail
+3)Save new todo detail
 
  request:
  ```
-   $  curl -XPOST 'localhost:9000/bank/save'  -d '{"name":"New Bank"}'
+   $  curl -XPOST 'localhost:9000/todo/save'  -d '{"name":"New Todo"}'
    ```
-   
+  
  response:
  
- Bank has  been saved successfully
+ Todo has  been saved successfully
 
-3)Update new bank detail
+3)Update new todo detail
 
   request:
   ```
-  $  curl -XPOST 'localhost:9000/bank/update'  -d '{"name":"Updated bank", "id":1}'
+  $  curl -XPOST 'localhost:9000/todo/update'  -d '{"name":"Updated todo", "id":1}'
   
   ```
   
   response:
   
-   Bank has  been updated successfully
+   Todo has  been updated successfully
 
-4)delete bank by id
+4)delete todo by id
 
   request:
-    
+  
   ```
-  $ curl -XPOST 'localhost:9000/bank/delete/1
+  $ curl -XPOST 'localhost:9000/todo/delete/1
   
   ```
   response:
   
-  Bank has been deleted successfully
+  Todo has been deleted successfully
