@@ -1,4 +1,4 @@
-package net.petitviolet.todoex.application
+package net.petitviolet.todoex.adapter.controller
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.Route

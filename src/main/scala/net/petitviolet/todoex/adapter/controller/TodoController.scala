@@ -1,4 +1,4 @@
-package net.petitviolet.todoex.application
+package net.petitviolet.todoex.adapter.controller
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.unmarshalling.Unmarshaller._
