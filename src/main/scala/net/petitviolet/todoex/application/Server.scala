@@ -1,17 +1,15 @@
 package net.petitviolet.todoex.application
 
-import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
-import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import net.petitviolet.todoex.support.Logger
 
-import scala.concurrent.{ ExecutionContextExecutor, Future }
+import scala.concurrent.Future
 
 class Server(route: Route, serverConfig: ServerConfig)(implicit val context: Context) extends Logger {
-  import serverConfig._
   import context._
+  import serverConfig._
 
   private var binding: Future[Http.ServerBinding] = _
 
@@ -31,28 +29,6 @@ class Server(route: Route, serverConfig: ServerConfig)(implicit val context: Con
     binding.flatMap(_.unbind()).onComplete { _ => context.shutdown() }
   }
 
-}
-
-trait Context {
-  implicit val system: ActorSystem
-  implicit val executor: ExecutionContextExecutor
-  implicit val materializer: ActorMaterializer
-
-  private[application] def shutdown() = system.terminate()
-}
-
-trait UsesContext {
-  val context: Context
-}
-
-trait MixInContext {
-  implicit val context: Context = ContextImpl
-}
-
-object ContextImpl extends Context {
-  implicit val system = ActorSystem()
-  implicit val executor = system.dispatcher
-  implicit val materializer = ActorMaterializer()
 }
 
 trait ServerConfig {
