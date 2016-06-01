@@ -8,7 +8,7 @@ import org.scalatest.{ Matchers, WordSpec }
 
 import scala.concurrent.Future
 
-class RouteTest extends WordSpec with Matchers with ScalatestRouteTest with Routes with ToDoRepositoryTestImpl {
+class RouteTest extends WordSpec with Matchers with ScalatestRouteTest with Router with ToDoRepositoryTestImpl {
 
   "The ToDo service" should {
 
