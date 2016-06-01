@@ -17,7 +17,8 @@ case class TodoNameDTO(name: String)
 case class TodoIdDTO(id: Int)
 
 object TodoDTOJsonProtocol extends DefaultJsonProtocol {
-  implicit val todoDtoProtocol: RootJsonFormat[TodoDTO] = jsonFormat2(TodoDTO.apply)
+  implicit val todoDtoProtocol: RootJsonFormat[TodoDTO] =
+    jsonFormat2(TodoDTO.apply: (Int, String) => TodoDTO)
   implicit val todoNameDtoProtocol: RootJsonFormat[TodoNameDTO] = jsonFormat1(TodoNameDTO.apply)
   implicit val todoIdDtoProtocol: RootJsonFormat[TodoIdDTO] = jsonFormat1(TodoIdDTO.apply)
 }
