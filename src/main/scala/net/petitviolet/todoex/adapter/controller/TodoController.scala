@@ -32,10 +32,7 @@ trait TodoController extends JsonController
           val findTodoDTOFuture = findTodoPresenter.response(
             findTodoUseCase.execute(findDto)
           )
-
-          onSuccess(findTodoDTOFuture) { dtos =>
-            complete(dtos)
-          }
+          completeFuture(findTodoDTOFuture)
         }
       }
 
@@ -45,9 +42,7 @@ trait TodoController extends JsonController
         createTodoUseCase.execute(nameDto)
       )
 
-      onSuccess(savedTodoDTOFuture) { todoDto =>
-        complete(todoDto)
-      }
+      completeFuture(savedTodoDTOFuture)
     }
 
   private def updateTodoRoute =
@@ -57,9 +52,7 @@ trait TodoController extends JsonController
           updateTodoUseCase.execute(TodoDTO(idDto, nameDto))
         )
 
-        onSuccess(updatedTodoDTOFuture) { todoDto =>
-          complete(todoDto)
-        }
+        completeFuture(updatedTodoDTOFuture)
       }
     }
 
@@ -69,9 +62,7 @@ trait TodoController extends JsonController
         deleteTodoUseCase.execute(idDto)
       )
 
-      onSuccess(deleteTodoDTOFuture) { todoDto =>
-        complete(todoDto)
-      }
+      completeFuture(deleteTodoDTOFuture)
     }
 
   val route = pathPrefix("todo") {
