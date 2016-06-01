@@ -24,54 +24,61 @@ trait TodoController extends JsonController
     with UsesDeleteTodoUseCase with UsesDeleteTodoPresenter
     with UsesToDoRepository {
 
-  val route = pathPrefix("todo") {
-
+  private def findTodoRoute =
     (path("all") & provide(FindAllTodoDTO) |
       path("search") & parameter('name).as[FindTodoDTO](FindByNameTodoDTO) |
       path(IntNumber).as[FindTodoDTO](FindByIdTodoDTO)) { findDto: FindTodoDTO =>
         get {
-          onSuccess(findTodoPresenter.response(
+          val findTodoDTOFuture = findTodoPresenter.response(
             findTodoUseCase.execute(findDto)
-          )) { dtos => complete(dtos) }
-        }
-      } ~
-      path("save") {
-        post {
-          entity(as[TodoNameDTO]) { nameDto =>
-            val savedTodoDTOFuture: Future[TodoDTO] = createTodoPresenter.response(
-              createTodoUseCase.execute(nameDto)
-            )
-
-            onSuccess(savedTodoDTOFuture) { todoDto =>
-              complete(todoDto)
-            }
-          }
-        }
-      } ~
-      path("update" / IntNumber).as(TodoIdDTO) { idDto =>
-        put {
-          entity(as[TodoNameDTO]) { nameDto =>
-            val updatedTodoDTOFuture: Future[TodoDTO] = updateTodoPresenter.response(
-              updateTodoUseCase.execute(TodoDTO(idDto, nameDto))
-            )
-
-            onSuccess(updatedTodoDTOFuture) { todoDto =>
-              complete(todoDto)
-            }
-          }
-        }
-      } ~
-      path("delete" / IntNumber).as(TodoIdDTO) { idDto =>
-        delete {
-          val deleteTodoDTOFuture = deleteTodoPresenter.response(
-            deleteTodoUseCase.execute(idDto)
           )
 
-          onSuccess(deleteTodoDTOFuture) { todoDto =>
-            complete(todoDto)
+          onSuccess(findTodoDTOFuture) { dtos =>
+            complete(dtos)
           }
         }
       }
+
+  private def saveTodoRoute =
+    (path("save") & post & entity(as[TodoNameDTO])) { nameDto =>
+      val savedTodoDTOFuture: Future[TodoDTO] = createTodoPresenter.response(
+        createTodoUseCase.execute(nameDto)
+      )
+
+      onSuccess(savedTodoDTOFuture) { todoDto =>
+        complete(todoDto)
+      }
+    }
+
+  private def updateTodoRoute =
+    path("update" / IntNumber).as(TodoIdDTO) { idDto =>
+      (put & entity(as[TodoNameDTO])) { nameDto =>
+        val updatedTodoDTOFuture: Future[TodoDTO] = updateTodoPresenter.response(
+          updateTodoUseCase.execute(TodoDTO(idDto, nameDto))
+        )
+
+        onSuccess(updatedTodoDTOFuture) { todoDto =>
+          complete(todoDto)
+        }
+      }
+    }
+
+  private def deleteTodoRoute =
+    (path("delete" / IntNumber).as(TodoIdDTO) & delete) { idDto =>
+      val deleteTodoDTOFuture = deleteTodoPresenter.response(
+        deleteTodoUseCase.execute(idDto)
+      )
+
+      onSuccess(deleteTodoDTOFuture) { todoDto =>
+        complete(todoDto)
+      }
+    }
+
+  val route = pathPrefix("todo") {
+    findTodoRoute ~
+      saveTodoRoute ~
+      updateTodoRoute ~
+      deleteTodoRoute
   }
 
 }
