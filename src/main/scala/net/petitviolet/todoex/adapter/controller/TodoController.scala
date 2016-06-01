@@ -37,9 +37,9 @@ trait TodoController extends JsonController
       } ~
       path("save") {
         post {
-          entity(as[TodoNameDTO]) { todo =>
+          entity(as[TodoNameDTO]) { nameDto =>
             val savedTodoDTOFuture: Future[TodoDTO] = createTodoPresenter.response(
-              createTodoUseCase.execute(todo)
+              createTodoUseCase.execute(nameDto)
             )
 
             onSuccess(savedTodoDTOFuture) { todoDto =>
@@ -48,14 +48,14 @@ trait TodoController extends JsonController
           }
         }
       } ~
-      path("update" / IntNumber) { id =>
+      path("update" / IntNumber).as(TodoIdDTO) { idDto =>
         put {
-          entity(as[TodoNameDTO]) { todo =>
-            val savedTodoDTOFuture: Future[TodoDTO] = createTodoPresenter.response(
-              createTodoUseCase.execute(todo)
+          entity(as[TodoNameDTO]) { nameDto =>
+            val updatedTodoDTOFuture: Future[TodoDTO] = updateTodoPresenter.response(
+              updateTodoUseCase.execute(TodoDTO(idDto, nameDto))
             )
 
-            onSuccess(savedTodoDTOFuture) { todoDto =>
+            onSuccess(updatedTodoDTOFuture) { todoDto =>
               complete(todoDto)
             }
           }

@@ -5,6 +5,11 @@ import spray.json._
 // standart DTO compatible with Todo object
 case class TodoDTO(id: Int, name: String)
 
+object TodoDTO {
+  def apply(idDTO: TodoIdDTO, nameDTO: TodoNameDTO): TodoDTO =
+    TodoDTO.apply(idDTO.id, nameDTO.name)
+}
+
 // represent Todo object with `None` id
 case class TodoNameDTO(name: String)
 
