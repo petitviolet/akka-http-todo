@@ -4,12 +4,13 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.unmarshalling.Unmarshaller._
 import net.petitviolet.todoex.adapter.presenter.todo._
 import net.petitviolet.todoex.adapter.repository.{ MixInToDoRepository, UsesToDoRepository }
+import net.petitviolet.todoex.application.Context
 import net.petitviolet.todoex.contract.usecase.todo.TodoDTOJsonProtocol._
 import net.petitviolet.todoex.contract.usecase.todo._
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 
-class TodoControllerImpl(implicit val dispatcher: ExecutionContext)
+class TodoControllerImpl(implicit val context: Context)
   extends TodoController with MixInToDoRepository
   with MixInCreateTodoUseCase with MixInCreateTodoPresenter
   with MixInUpdateTodoUseCase with MixInUpdateTodoPresenter

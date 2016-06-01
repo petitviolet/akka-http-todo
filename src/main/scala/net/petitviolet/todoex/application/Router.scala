@@ -7,7 +7,7 @@ import net.petitviolet.todoex.adapter.controller.Controller
 
 import scala.concurrent.ExecutionContext
 
-class Router(controllers: Seq[Controller])(implicit dispatcher: ExecutionContext) {
+class Router(controllers: Seq[Controller]) {
 
   private val rejectionHandler =
     RejectionHandler
