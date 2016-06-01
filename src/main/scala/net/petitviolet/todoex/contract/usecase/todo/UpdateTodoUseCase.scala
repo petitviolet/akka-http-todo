@@ -13,8 +13,8 @@ trait UpdateTodoUseCase extends UseCase
     val todo = dtoToEntity(arg)
     val idFuture = todoRepository.update(todo)
 
-    idFuture map { id =>
-      TodoDTO(id, arg.name)
+    idFuture map { _ =>
+      arg
     }
   }
 
