@@ -3,7 +3,7 @@ package net.petitviolet.todoex.application
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
-import net.petitviolet.todoex.adapter.controller.TodoController
+import net.petitviolet.todoex.adapter.controller.{ TodoControllerImpl, TodoController }
 import net.petitviolet.todoex.adapter.repository.MixInToDoRepository
 
 object HttpService extends App with MixInToDoRepository {
@@ -21,7 +21,7 @@ object HttpService extends App with MixInToDoRepository {
   //      toDoRepository.create(ToDo("RBS"))
   //  }
 
-  val router = new Router(TodoController :: Nil)
+  val router = new Router(new TodoControllerImpl :: Nil)
   Http().bindAndHandle(router.routes, "localhost", 9000)
 
   /**

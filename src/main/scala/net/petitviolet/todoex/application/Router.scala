@@ -5,7 +5,9 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server._
 import net.petitviolet.todoex.adapter.controller.Controller
 
-class Router(controllers: Seq[Controller]) {
+import scala.concurrent.ExecutionContext
+
+class Router(controllers: Seq[Controller])(implicit dispatcher: ExecutionContext) {
 
   private val rejectionHandler =
     RejectionHandler

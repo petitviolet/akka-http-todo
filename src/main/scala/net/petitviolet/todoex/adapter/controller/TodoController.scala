@@ -7,15 +7,14 @@ import net.petitviolet.todoex.adapter.repository.{ MixInToDoRepository, UsesToDo
 import net.petitviolet.todoex.contract.usecase.todo.TodoDTOJsonProtocol._
 import net.petitviolet.todoex.contract.usecase.todo._
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
-object TodoController extends TodoController
+class TodoControllerImpl(implicit val dispatcher: ExecutionContext)
+  extends TodoController with MixInToDoRepository
   with MixInCreateTodoUseCase with MixInCreateTodoPresenter
   with MixInUpdateTodoUseCase with MixInUpdateTodoPresenter
   with MixInFindTodoUseCase with MixInFindTodoPresenter
   with MixInDeleteTodoUseCase with MixInDeleteTodoPresenter
-  with MixInToDoRepository
 
 trait TodoController extends JsonController
     with UsesCreateTodoUseCase with UsesCreateTodoPresenter

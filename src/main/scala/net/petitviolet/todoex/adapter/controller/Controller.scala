@@ -6,9 +6,10 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 import net.petitviolet.todoex.support.JsonHelper
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 trait Controller {
+  implicit val dispatcher: ExecutionContext
   val route: Route
 }
 
