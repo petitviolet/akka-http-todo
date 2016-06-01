@@ -13,7 +13,7 @@ class Server(route: Route, serverConfig: ServerConfig)(implicit val context: Con
   import serverConfig._
   import context._
 
-  var binding: Future[Http.ServerBinding] = _
+  private var binding: Future[Http.ServerBinding] = _
 
   def start() = {
     logger.info(s"Starting service on $host:$port")

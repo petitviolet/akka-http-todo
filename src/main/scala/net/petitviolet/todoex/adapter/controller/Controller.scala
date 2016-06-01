@@ -11,7 +11,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 trait Controller {
   implicit val context: Context
-  implicit val ec: ExecutionContext = context.executor
+  protected implicit val ec: ExecutionContext = context.executor
   val route: Route
 }
 
