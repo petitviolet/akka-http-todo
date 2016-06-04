@@ -27,4 +27,3 @@ object ContextImpl extends Context {
   implicit val materializer = ActorMaterializer()
 }
 
-
