@@ -23,10 +23,10 @@ class Server(route: Route, serverConfig: ServerConfig)(implicit val context: Con
     binding
   }
 
-  def stop() = {
+  def stop(): Future[Unit] = {
     require(binding != null)
     logger.info(s"Stop server $host:$port")
-    binding.flatMap(_.unbind()).onComplete { _ => context.shutdown() }
+    binding.flatMap(_.unbind())
   }
 
 }
