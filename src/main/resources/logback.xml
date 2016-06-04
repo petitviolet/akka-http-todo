@@ -3,21 +3,25 @@
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%highlight([%level]) - [%date] - [%logger]  %msg%n</pattern>
+			<pattern>[%date]%highlight([%level])[%logger] %msg%n</pattern>
 		</encoder>
 	</appender>
+
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<prudent>true</prudent>
+    <file>${LOG_DIR}/todo.log</file>
+		<!-- <prudent>true</prudent> -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-		<fileNamePattern>log-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>${LOG_DIR}/todo-%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>3</maxHistory>
 		</rollingPolicy>
 		<append>true</append>
 		<encoder>
-			<pattern>%highlight([%level]) - [%date] - [%logger]  %msg%n</pattern>
+			<pattern>[%date]%highlight([%level])[%logger] %msg%n</pattern>
 		</encoder>
 	</appender>
-	<root level="info">
+
+  <root level="${LOG_LEVEL:-info}">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
-</configuration> 
+</configuration>
