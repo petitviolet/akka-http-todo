@@ -1,74 +1,36 @@
 # akka-http-slick
 
-### Run unit test:
-```
-$ ./activator test
- 
- ```
+## How to launch 
 
-### Run http server(It automatically connect with H2 database):
+### Run http server:
+
 ```
 $ ./activator run
-
 ```
 
-### Test http rest point using curl:
+### Run http server with configuration(e.g. loglevel, mysql-user, etc.):
 
-1) Get Todo detail by todo id
-
- request:
- ```
-$ curl localhost:9000/todo/1
- 
- ```
-response:
 ```
- {"name":"SBI todo","id":1}
- ```
-
-2)Get all Todo detail
-
-
- request:
-```
-$ curl localhost:9000/todo/all
-```
-response:
-```
-[{"name":"SBI todo","id":1},{"name":"PNB todo","id":2},{"name":"RBS todo","id":3}]
+$ ./activator 'run' -DLOG_LEVEL=INFO -DLOG_DIR=./logs -Dakka.loglevel=debug -DMYSQL_USER=test 
 ```
 
-3)Save new todo detail
+### Compose fat JAR
 
- request:
- ```
-   $  curl -XPOST 'localhost:9000/todo/save'  -d '{"name":"New Todo"}'
-   ```
-  
- response:
- 
- Todo has  been saved successfully
+```
+$ ./activator assembly
+```
 
-3)Update new todo detail
+# API Endpoint
 
-  request:
-  ```
-  $  curl -XPOST 'localhost:9000/todo/update'  -d '{"name":"Updated todo", "id":1}'
-  
-  ```
-  
-  response:
-  
-   Todo has  been updated successfully
+## ToDo
 
-4)delete todo by id
-
-  request:
-  
-  ```
-  $ curl -XPOST 'localhost:9000/todo/delete/1
-  
-  ```
-  response:
-  
-  Todo has been deleted successfully
+- GET: /todo/all
+- GET: /todo/search?name=<name>
+- GET: /todo/<id>
+- POST: /todo/save
+    - `Content-Type: application/json`
+    - `{"name":"crazy"}`
+- PUT: /todo/update/<id>
+    - `Content-Type: application/json`
+    - `{"name":"crazy"}`
+- DELETE: /todo/delete/<id>
