@@ -29,7 +29,7 @@ trait FindTodoUseCase extends UseCase
         todo <- todoOpt
         id <- todo.id
       } yield {
-        TodoDTO(id, todo.name)
+        TodoDTO(id, todo.name, todo.status.value)
       }
     }
   }

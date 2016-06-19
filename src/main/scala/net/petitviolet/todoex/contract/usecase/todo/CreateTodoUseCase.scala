@@ -14,7 +14,7 @@ trait CreateTodoUseCase extends UseCase
     val idFuture = todoRepository.create(todo)
 
     idFuture map { id =>
-      TodoDTO(id, todo.name)
+      TodoDTO(id, todo.name, todo.status.value)
     }
   }
 
