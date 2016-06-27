@@ -26,7 +26,7 @@ trait TodoController extends JsonController
 
   private def findTodoRoute =
     (path("all") & provide(FindAllTodoDTO) |
-      path("search") & parameter('name).as[FindTodoDTO](FindByNameTodoDTO) |
+      path("search") & parameters('name.?, 'status.as[Int].?).as[FindTodoDTO](FindByConditionTodoDTO.apply _) |
       path(IntNumber).as[FindTodoDTO](FindByIdTodoDTO)) { findDto: FindTodoDTO =>
         get {
           val findTodoDTOFuture = findTodoPresenter.response(

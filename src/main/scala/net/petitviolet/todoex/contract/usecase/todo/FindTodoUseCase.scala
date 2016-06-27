@@ -2,7 +2,7 @@ package net.petitviolet.todoex.contract.usecase.todo
 
 import net.petitviolet.todoex.adapter.repository.{ MixInToDoRepository, UsesToDoRepository }
 import net.petitviolet.todoex.contract.{ InputPort, UseCase }
-import net.petitviolet.todoex.domain.todo.Todo
+import net.petitviolet.todoex.domain.todo.{ TodoStatus, Todo }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -20,11 +20,18 @@ trait FindTodoUseCase extends UseCase
   override protected def call(arg: In)(implicit ec: ExecutionContext): Future[Out] = {
     (arg match {
       case FindAllTodoDTO =>
-        todoRepository.getAll
+        todoRepository.getAll()
       case FindByIdTodoDTO(id) =>
         todoRepository.getById(id) map { _.toSeq }
-      case FindByNameTodoDTO(name) =>
-        todoRepository.getByName(name)
+      case FindByConditionTodoDTO(nameOpt, statusOpt) =>
+        val res: Future[Seq[Todo]] = nameOpt.map { name =>
+          todoRepository.getByName(name)
+        } getOrElse todoRepository.getAll()
+
+        statusOpt.fold(res) { statusInt: Int =>
+          val status = TodoStatus(statusInt)
+          res.map { todos => todos.filter { _.status == status } }
+        }
     }).map { todoOpt =>
       for {
         todo: Todo <- todoOpt
