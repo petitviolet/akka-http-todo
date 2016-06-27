@@ -1,6 +1,7 @@
 package net.petitviolet.todoex.adapter.infra.table
 
 import net.petitviolet.todoex.adapter.infra.DBComponent
+import net.petitviolet.todoex.contract.usecase.todo.TodoDTO
 import net.petitviolet.todoex.domain.todo.{ Todo, TodoStatus }
 
 trait ToDoTable { this: DBComponent =>
@@ -16,7 +17,7 @@ trait ToDoTable { this: DBComponent =>
       (id.?, name, status).shaped <> (
         {
           case (_id, _name, _status) =>
-            Todo(_id, _name, TodoStatus(_status))
+            Todo.convertFromDTO(TodoDTO(_id.get, _name, _status))
         },
         {
           todo: Todo =>

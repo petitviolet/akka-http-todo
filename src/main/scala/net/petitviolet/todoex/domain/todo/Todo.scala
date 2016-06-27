@@ -1,13 +1,18 @@
 package net.petitviolet.todoex.domain.todo
 
-case class Todo(id: Option[Int] = None, name: String, status: TodoStatus = NotCompleted)
+import net.petitviolet.todoex.contract.usecase.todo.TodoDTO
+
+class Todo private (
+  val id: Option[Int] = None,
+  val name: String,
+  val status: TodoStatus
+)
 
 object Todo {
-  //  def tupled(id: Option[Int], name: String, statusInt: Int): Todo =
-  //    Todo(id, name, TodoStatus(statusInt))
+  def apply(name: String): Todo = new Todo(None, name, NotCompleted)
+
+  def convertFromDTO(todoDTO: TodoDTO) = new Todo(Option(todoDTO.id), todoDTO.name, TodoStatus(todoDTO.status))
 }
-//  createdAt: LocalDateTime = LocalDateTime.now(),
-//  updatedAt: LocalDateTime = LocalDateTime.now())
 
 sealed abstract class TodoStatus(val value: Int)
 case object NotCompleted extends TodoStatus(0)

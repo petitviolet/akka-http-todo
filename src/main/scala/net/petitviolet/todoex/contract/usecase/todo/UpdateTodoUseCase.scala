@@ -18,8 +18,7 @@ trait UpdateTodoUseCase extends UseCase
     }
   }
 
-  private def dtoToEntity(arg: In) =
-    Todo(id = Some(arg.id), name = arg.name)
+  private def dtoToEntity(arg: In) = Todo.convertFromDTO(arg)
 }
 
 trait UsesUpdateTodoUseCase {
