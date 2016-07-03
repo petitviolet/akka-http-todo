@@ -14,8 +14,18 @@ object TodoDTO {
 // represent Todo object with `None` id
 case class TodoNameDTO(
   name: String,
-  status: Int = NotCompleted.value
+  status: Int = 0 //NotCompleted.value
 ) // why knows `NotCompleted`...?
+
+case class UpdateWithoutIdTodoDTO(
+  name: Option[String],
+  status: Option[Int]
+)
+case class UpdateTodoDTO(
+  id: Int,
+  name: Option[String],
+  status: Option[Int]
+)
 
 // represent ID of Todo object
 case class TodoIdDTO(id: Int)
@@ -24,4 +34,6 @@ object TodoDTOJsonProtocol extends DefaultJsonProtocol {
   implicit val todoDtoProtocol: RootJsonFormat[TodoDTO] = jsonFormat3(TodoDTO.apply)
   implicit val todoNameDtoProtocol: RootJsonFormat[TodoNameDTO] = jsonFormat2(TodoNameDTO.apply)
   implicit val todoIdDtoProtocol: RootJsonFormat[TodoIdDTO] = jsonFormat1(TodoIdDTO.apply)
+  implicit val updateWithoutIdTodoDTOProtocol: RootJsonFormat[UpdateWithoutIdTodoDTO] = jsonFormat2(UpdateWithoutIdTodoDTO.apply)
+  implicit val updateTodoDTOProtocol: RootJsonFormat[UpdateTodoDTO] = jsonFormat3(UpdateTodoDTO.apply)
 }

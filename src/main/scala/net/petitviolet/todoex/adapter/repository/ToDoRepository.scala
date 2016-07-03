@@ -2,7 +2,11 @@ package net.petitviolet.todoex.adapter.repository
 
 import net.petitviolet.todoex.adapter.infra.table.ToDoTable
 import net.petitviolet.todoex.adapter.infra.{ MySQLDBImpl, DBComponent }
+import net.petitviolet.todoex.contract.usecase.todo.UpdateTodoDTO
 import net.petitviolet.todoex.domain.todo.Todo
+import slick.dbio
+import slick.dbio.Effect.Write
+import slick.profile.FixedSqlAction
 
 import scala.concurrent.Future
 
@@ -25,6 +29,16 @@ trait ToDoRepository extends ToDoTable {
    */
   def update(todo: Todo): Future[Int] = db.run {
     todoTableQuery.filter(_.id === todo.id.get).update(todo)
+  }
+
+  def update(dto: UpdateTodoDTO): Future[Int] = {
+    val all = todoTableQuery.filter(_.id === dto.id)
+    val updateNameOpt = dto.name.map { name => all.map { _.name }.update(name) }
+    val updateStatusOpt = dto.status.map { status => all.map { _.status }.update(status) }
+    val query = Seq[Option[DBIOAction[Int, NoStream, Write]]](updateNameOpt, updateStatusOpt)
+      .collect { case opt if opt.isDefined => opt.get }
+      .reduceLeft((i, j) => i >> j)
+    db.run { query }
   }
 
   /**

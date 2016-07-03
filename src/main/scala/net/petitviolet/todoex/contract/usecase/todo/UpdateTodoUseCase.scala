@@ -7,16 +7,14 @@ import net.petitviolet.todoex.domain.todo.Todo
 import scala.concurrent.{ ExecutionContext, Future }
 
 trait UpdateTodoUseCase extends UseCase
-    with InputPort[TodoDTO, TodoDTO] with UsesToDoRepository {
+    with InputPort[UpdateTodoDTO, UpdateTodoDTO] with UsesToDoRepository {
 
   override protected def call(arg: In)(implicit ec: ExecutionContext): Future[Out] = {
-    val todo = dtoToEntity(arg)
-    val idFuture = todoRepository.update(todo)
+    val idFuture = todoRepository.update(arg)
 
     idFuture map { _ => arg }
   }
 
-  private def dtoToEntity(arg: In) = Todo.convertFromDTO(arg)
 }
 
 trait UsesUpdateTodoUseCase {

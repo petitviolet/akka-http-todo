@@ -1,6 +1,5 @@
 package net.petitviolet.todoex.contract.usecase.todo
 
-import net.petitviolet.todoex.domain.todo.{ NotCompleted, TodoStatus }
 import spray.json._
 
 sealed trait FindTodoDTO

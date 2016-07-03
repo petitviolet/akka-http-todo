@@ -49,9 +49,9 @@ trait TodoController extends JsonController
 
   private def updateTodoRoute =
     path("update" / IntNumber).as(TodoIdDTO) { idDto =>
-      (put & entity(as[TodoNameDTO])) { nameDto =>
-        val updatedTodoDTOFuture: Future[TodoDTO] = updateTodoPresenter.response(
-          updateTodoUseCase.execute(TodoDTO(idDto, nameDto))
+      (put & entity(as[UpdateWithoutIdTodoDTO])) { updateWithoutIdDto =>
+        val updatedTodoDTOFuture: Future[UpdateTodoDTO] = updateTodoPresenter.response(
+          updateTodoUseCase.execute(UpdateTodoDTO(idDto.id, updateWithoutIdDto.name, updateWithoutIdDto.status))
         )
 
         completeFuture(updatedTodoDTOFuture)
