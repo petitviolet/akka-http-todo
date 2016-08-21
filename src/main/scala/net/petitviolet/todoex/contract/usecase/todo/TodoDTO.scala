@@ -1,6 +1,6 @@
 package net.petitviolet.todoex.contract.usecase.todo
 
-import net.petitviolet.todoex.domain.todo.{ Todo, NotCompleted }
+import net.petitviolet.todoex.domain.todo.NotCompleted
 import spray.json._
 
 // standart DTO compatible with Todo object
@@ -14,8 +14,8 @@ object TodoDTO {
 // represent Todo object with `None` id
 case class TodoNameDTO(
   name: String,
-  status: Int = 0 //NotCompleted.value
-) // why knows `NotCompleted`...?
+  status: Int = NotCompleted.value
+)
 
 case class UpdateWithoutIdTodoDTO(
   name: Option[String],
